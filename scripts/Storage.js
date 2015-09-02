@@ -24,14 +24,29 @@ gg.class.Storage = function() {
 
         if (args.length == 0) {
             _localStorage.getItem(_key);
+            var arrayString = _localStorage.getItem(_key);
+            try {
+                return JSON.parse(arrayString) || [];
+            } catch (ex){
+                return [];
+            }
         }
     };
 
     this.set = function(value) {
         if (!_localStorage) {
-            return null;
+            return [];
         }
-        _localStorage.setItem(_key, value);
+
+        var arrayString = _localStorage.getItem(_key);
+        var array;
+        try {
+            array = JSON.parse(arrayString) || [];
+        } catch (ex){
+            return;
+        }
+        array.push(value);
+        _localStorage.setItem(_key, JSON.stringify(array));
     };
 
     // return this;

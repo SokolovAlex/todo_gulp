@@ -21,4 +21,8 @@ gg.class.Input = function() {
         $input = $('input', $el);
         bind();
     };
+
+    this.clear = function() {
+        $input.val('');
+    };
 };

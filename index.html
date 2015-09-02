@@ -9,7 +9,7 @@
 				<h1>todos</h1>
 				<input class="new-todo" placeholder="What needs to be done?" autofocus="">
 			</header>
-			<section class="main" style="display: none;">
+			<section class="main hidden">
 				<input class="toggle-all" type="checkbox">
 				<label for="toggle-all">Mark all as complete</label>
 				<ul class="todo-list">
@@ -25,12 +25,14 @@
 		</footer>
 
 		<script type="text/template" id="item-template">
-			<div class="view">
-				<input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-				<label><%- title %></label>
-				<button class="destroy"></button>
-			</div>
-			<input class="edit" value="<%- title %>">
+			<li>
+                <div class="view">
+                    <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
+                    <label><%- title %></label>
+                    <button class="destroy"></button>
+                </div>
+                <input class="edit" value="<%- title %>">
+            </li>
 		</script>
 
 		<script type="text/template" id="stats-template">
@@ -52,11 +54,14 @@
 		</script>
 
 		<script type="application/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="application/javascript" src="bower_components/lodash/lodash.min.js"></script>
 
 		<script type="application/javascript" src="scripts/Application.js"></script>
 		<script type="application/javascript" src="scripts/Input.js"></script>
 		<script type="application/javascript" src="scripts/Storage.js"></script>
 		<script type="application/javascript" src="scripts/Observable.js"></script>
+        <script type="application/javascript" src="scripts/Todo.js"></script>
+        <script type="application/javascript" src="scripts/TodoCollection.js"></script>
 
 		<script type="application/javascript" src="scripts/main.js"></script>
 
