@@ -4,19 +4,33 @@
 		<link rel="stylesheet" href="styles/common.css">
 	</head>
 	<body class="learn-bar">
-		<section class="todoapp">
+		<section class="todoapp hidden">
 			<header class="header input_main">
 				<h1>todos</h1>
 				<input class="new-todo" placeholder="What needs to be done?" autofocus="">
 			</header>
-			<section class="main hidden">
+			<section class="main">
 				<input class="toggle-all" type="checkbox">
 				<label for="toggle-all">Mark all as complete</label>
 				<ul class="todo-list">
 
 				</ul>
 			</section>
-			<footer class="footer" style="display: none;"></footer>
+			<footer class="footer">
+                <span class="todo-count"> <span class=".amount"></span> left</span>
+                <ul class="filters">
+                    <li>
+                        <a class="selected" href="#/">All</a>
+                    </li>
+                    <li>
+                        <a href="#/active">Active</a>
+                    </li>
+                    <li>
+                        <a href="#/completed">Completed</a>
+                    </li>
+                </ul>
+                <button class="clear-completed">Clear completed</button>
+            </footer>
 		</section>
 
 		<footer class="info">
@@ -25,9 +39,9 @@
 		</footer>
 
 		<script type="text/template" id="item-template">
-			<li>
+			<li class="<%= completed ? 'completed' : ''%>" >
                 <div class="view">
-                    <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
+                    <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %> >
                     <label><%- title %></label>
                     <button class="destroy"></button>
                 </div>
@@ -35,27 +49,10 @@
             </li>
 		</script>
 
-		<script type="text/template" id="stats-template">
-			<span class="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>
-			<ul class="filters">
-				<li>
-					<a class="selected" href="#/">All</a>
-				</li>
-				<li>
-					<a href="#/active">Active</a>
-				</li>
-				<li>
-					<a href="#/completed">Completed</a>
-				</li>
-			</ul>
-			<% if (completed) { %>
-			<button class="clear-completed">Clear completed</button>
-			<% } %>
-		</script>
-
 		<script type="application/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
         <script type="application/javascript" src="bower_components/lodash/lodash.min.js"></script>
 
+        <script type="application/javascript" src="scripts/Footer.js"></script>
 		<script type="application/javascript" src="scripts/Application.js"></script>
 		<script type="application/javascript" src="scripts/Input.js"></script>
 		<script type="application/javascript" src="scripts/Storage.js"></script>

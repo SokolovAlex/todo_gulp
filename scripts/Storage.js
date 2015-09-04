@@ -33,6 +33,13 @@ gg.class.Storage = function() {
         }
     };
 
+    this.sync = function(array) {
+        if (!_localStorage) {
+            return;
+        }
+        _localStorage.setItem(_key, JSON.stringify(array));
+    };
+
     this.set = function(value) {
         if (!_localStorage) {
             return [];

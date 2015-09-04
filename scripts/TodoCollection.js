@@ -12,33 +12,47 @@ gg.class.TodoCollection = function() {
 
     var Todo = gg.class.Todo;
 
+    function bind() {
+        self.on("remove", function(todo) {
+            _todos = _.reject(_todos, function(item) {
+                return todo._id === item._id;
+            });
+            self.emit('sync', _todos);
+        });
+
+        self.on("complete", function() {
+            self.emit('sync', _todos);
+        });
+    }
+
     this.init = function(el) {
         gg.class.Observable(self);
+        bind();
         _todos = [];
         $el = el;
     };
 
     this.add = function(text) {
-        var todo = new Todo(text, _todos.length + 1);
+        var todo = new Todo({ name: text, _id: _todos.length + 1 }, self);
         $el.append(todo.render());
+
         _todos.push(todo);
         self.emit('added', todo);
     };
 
     this.fetch = function(todoArray) {
-        _todos = todoArray;
-        self.render();
+        self.render(todoArray);
         self.emit('fetch');
     };
 
-    this.render = function() {
-        var resultHtml = '';
-        _.each(_todos, function(item) {
-            var todo = new Todo(item.name, item._id);
+    this.render = function(array) {
+        var result = [];
+        _.each(array, function(item) {
+            var todo = new Todo(item, self);
             _todos.push(todo);
-            resultHtml += todo.render();
+            result.push(todo.render());
         });
-        $el.append(resultHtml);
+        $el.append(result);
     };
 
     this.count = function() {

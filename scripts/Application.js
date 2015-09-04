@@ -7,14 +7,15 @@ gg.class.Application = function() {
     var storage = new gg.class.Storage(),
         input = new gg.class.Input(),
         todoCollection = new gg.class.TodoCollection(),
-        $mainSection;
+        footer = new gg.class.Footer(),
+        $mainSection,
+        $el;
 
     function checkVisibility() {
-        debugger;
         if(todoCollection.count() === 0) {
-            $mainSection.addClass('hidden');
+            $el.addClass('hidden');
         } else {
-            $mainSection.removeClass('hidden');
+            $el.removeClass('hidden');
         }
     }
 
@@ -29,13 +30,17 @@ gg.class.Application = function() {
             checkVisibility();
         });
 
+        todoCollection.on('sync', storage.sync);
+
         todoCollection.on('fetch', checkVisibility);
     }
 
     this.init = function() {
+        $el = $('.todoapp');
         storage.init();
         input.init($(".todoapp .input_main"));
         todoCollection.init($(".todoapp .todo-list"));
+        footer.init($('.todoapp .footer'));
 
         bind();
 

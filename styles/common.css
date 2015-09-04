@@ -242,7 +242,8 @@ label[for='toggle-all'] {
 	display: none;
 }
 
-.hidden {
+.hidden .footer,
+.hidden .main {
     display: none;
 }
 
