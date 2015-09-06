@@ -1,45 +1,30 @@
 ﻿/// <binding Clean='clean' />
 
 var gulp = require("gulp"),
-    rimraf = require("rimraf"),
+    rimraf = require("gulp-rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify"),
-    project = require("./project.json");
+    uglify = require("gulp-uglify");
 
-var paths = {
-    webroot: "./" + project.webroot + "/"
-};
-
-paths.js = paths.webroot + "js/**/*.js";
-paths.minJs = paths.webroot + "js/**/*.min.js";
-paths.css = paths.webroot + "css/**/*.css";
-paths.minCss = paths.webroot + "css/**/*.min.css";
-paths.concatJsDest = paths.webroot + "js/site.min.js";
-paths.concatCssDest = paths.webroot + "css/site.min.css";
-
-gulp.task("clean:js", function (cb) {
-    rimraf(paths.concatJsDest, cb);
+gulp.task('clean', function() {
+    gulp.src(["build/**/*.js", "build/**/*.css"], { read: false })
+        .pipe(rimraf());
 });
 
-gulp.task("clean:css", function (cb) {
-    rimraf(paths.concatCssDest, cb);
-});
-
-gulp.task("clean", ["clean:js", "clean:css"]);
-
-gulp.task("min:js", function () {
-    gulp.src([paths.js, "!" + paths.minJs], { base: "." })
-        .pipe(concat(paths.concatJsDest))
+gulp.task("build:js", function () {
+    gulp.src([ 'bower_components/**/*min.js', 'scripts/**/*.js'])
+        .pipe(concat('scripts.js'))
         .pipe(uglify())
-        .pipe(gulp.dest("."));
+        .pipe(gulp.dest('build/'));
 });
 
-gulp.task("min:css", function () {
-    gulp.src([paths.css, "!" + paths.minCss])
-        .pipe(concat(paths.concatCssDest))
+gulp.task("build:css", function () {
+    gulp.src('styles/**/*.css')
+        .pipe(concat('styles.css'))
         .pipe(cssmin())
-        .pipe(gulp.dest("."));
+        .pipe(gulp.dest('build/'));
 });
 
-gulp.task("min", ["min:js", "min:css"]);
+gulp.task("build", ['build:js', 'build:css']);
+
+gulp.task("default", ['build']);
