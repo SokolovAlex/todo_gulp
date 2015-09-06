@@ -1,0 +1,5 @@
+.hidden .footer,
+.hidden .main
+{
+    display: none;
+}
