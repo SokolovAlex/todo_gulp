@@ -55,6 +55,12 @@ gg.class.TodoCollection = function() {
         $el.append(result);
     };
 
+    this.countCompleted = function() {
+        return _todos.filter(function(item) {
+            return !item.completed;
+        }).length;
+    };
+
     this.count = function() {
         return _todos.length;
     };

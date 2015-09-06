@@ -12,11 +12,13 @@ gg.class.Application = function() {
         $el;
 
     function checkVisibility() {
-        if(todoCollection.count() === 0) {
+        var amount = todoCollection.count();
+        if(amount === 0) {
             $el.addClass('hidden');
         } else {
             $el.removeClass('hidden');
         }
+        footer.setAmount(todoCollection.countCompleted());
     }
 
     function bind() {
@@ -30,7 +32,10 @@ gg.class.Application = function() {
             checkVisibility();
         });
 
-        todoCollection.on('sync', storage.sync);
+        todoCollection.on('sync', function(todos) {
+            storage.sync(todos);
+            footer.setAmount(todoCollection.countCompleted());
+        });
 
         todoCollection.on('fetch', checkVisibility);
     }

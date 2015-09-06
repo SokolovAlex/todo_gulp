@@ -40,7 +40,9 @@ input[type="checkbox"] {
 	outline: none;
 }
 
-.hidden {
+.hidden .footer,
+.hidden .main
+{
 	display: none;
 }
 
