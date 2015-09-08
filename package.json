@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/**/*test.js",
+    "karma": "karma start --brower=Chrome tests/karma.conf.js --auto-watch"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/SokolovAlex/todo_gulp#readme",
   "dependencies": {},
   "devDependencies": {
+    "browserify": "^11.0.1",
     "get-gulp-args": "0.0.1",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
@@ -32,6 +34,8 @@
     "gulp-if": "^1.2.5",
     "gulp-rimraf": "^0.1.1",
     "gulp-uglify": "^1.4.0",
+    "karma": "^0.13.9",
+    "vinyl-source-stream": "^1.1.0",
     "yargs": "^3.24.0"
   }
 }
