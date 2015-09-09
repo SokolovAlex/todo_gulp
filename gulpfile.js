@@ -6,6 +6,7 @@ var gulp = require("gulp"),
     rimraf = require("gulp-rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
+    jshint = require("gulp-jshint"),
     source = require('vinyl-source-stream'),
     args = require('yargs').argv,
     gulpif = require('gulp-if'),
@@ -24,8 +25,14 @@ gulp.task('clean', function() {
 gulp.task('eslint', function () {
     return gulp.src('examples/scripts/**/*.js')
         .pipe(eslint())
-        .pipe(eslint.format('tap'));
-     //   .pipe(eslint.failOnError());
+        .pipe(eslint.format('tap'))
+        .pipe(eslint.failOnError());
+});
+
+gulp.task('jshint', function () {
+    return gulp.src('examples/scripts/**/*.js')
+        .pipe(jshint('.jshintrc'))
+        .pipe(jshint.reporter('jshint-stylish'));
 });
 
 gulp.task('browserify', function() {
@@ -57,5 +64,7 @@ gulp.task("build:css", function () {
 });
 
 gulp.task("default", ['build']);
+
+gulp.task("validate", ['eslint']);
 
 gulp.task("build", ['clean', 'eslint', 'browserify', 'build:css', 'watch:br']);

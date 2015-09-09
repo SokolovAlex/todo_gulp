@@ -2,7 +2,6 @@
  * Created by sokolov on 02.09.2015.
  */
 var Observable = require('./Observable.js');
-var $ = require('jquery');
 var _ = require('lodash');
 var storage = require('./Storage')();
 

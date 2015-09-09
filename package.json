@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/**/*test.js",
-    "karma": "karma start --brower=Chrome tests/karma.conf.js --auto-watch"
+    "test": "mocha ./tests/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -33,13 +32,19 @@
     "gulp-cssmin": "^0.1.7",
     "gulp-eslint": "^1.0.0",
     "gulp-if": "^1.2.5",
+    "gulp-jshint": "^1.11.2",
     "gulp-notify": "^2.2.0",
     "gulp-rimraf": "^0.1.1",
     "gulp-uglify": "^1.4.0",
     "jquery": "^2.1.4",
+    "jshint-stylish": "^2.0.1",
     "karma": "^0.13.9",
     "lodash": "^3.10.1",
+    "precommit-hook": "^3.0.0",
     "vinyl-source-stream": "^1.1.0",
     "yargs": "^3.24.0"
-  }
+  },
+  "precommit": [
+    "validate"
+  ]
 }
