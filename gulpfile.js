@@ -8,22 +8,22 @@ var gulp = require("gulp"),
     source = require('vinyl-source-stream'),
     args = require('yargs').argv,
     gulpif = require('gulp-if'),
+    eslint = require('gulp-eslint'),
     uglify = require("gulp-uglify");
 
 var main_js = ['examples/scripts/main.js'];
-var js_src = [ 'bower_components/**/*min.js', 'scripts/**/*.js'];
-var watch_src2 = ['examples/scripts/**/*.js'];
+var watch_src = ['examples/scripts/**/*.js'];
 
 gulp.task('clean', function() {
     gulp.src(["build/**/*.js", "build/**/*.css"], { read: false })
         .pipe(rimraf());
 });
 
-gulp.task("build:js", function () {
-    gulp.src(js_src)
-        .pipe(concat('scripts.js'))
-        .pipe(gulpif(args.release, uglify()))
-        .pipe(gulp.dest('build/'));
+gulp.task('eslint', function () {
+    return gulp.src('examples/scripts/**/*.js')
+        .pipe(eslint())
+        .pipe(eslint.format('tap'))
+        .pipe(eslint.failOnError());
 });
 
 gulp.task('browserify', function() {
@@ -34,18 +34,11 @@ gulp.task('browserify', function() {
         .pipe(gulp.dest('build/'));
 });
 
-gulp.task("watch:js", function (cb) {
-    if (args.release) {
-        return cb();
-    }
-    gulp.watch(js_src, ['build:js']);
-});
-
 gulp.task("watch:br", function (cb) {
     if (args.release) {
         return cb();
     }
-    gulp.watch(watch_src2, ['browserify']);
+    gulp.watch(watch_src, ['eslint', 'browserify']);
 });
 
 gulp.task("build:css", function () {
@@ -55,8 +48,6 @@ gulp.task("build:css", function () {
         .pipe(gulp.dest('build/'));
 });
 
-gulp.task("build", ['clean', 'build:js', 'build:css', 'watch:js']);
-
 gulp.task("default", ['build']);
 
-gulp.task("build2", ['clean', 'browserify', 'build:css', 'watch:br']);
+gulp.task("build", ['clean', 'eslint', 'browserify', 'build:css', 'watch:br']);

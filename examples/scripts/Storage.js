@@ -1,5 +1,5 @@
 module.exports = function() {
-    var self = {}
+    var self = {};
     var _key = "gg";
     var _localStorage;
 
