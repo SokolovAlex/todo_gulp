@@ -1,4 +1,6 @@
-var $ = require('../../bower_components/jquery/dist/jquery.js');
-var app = require('./Application.js');
+//var $ = require('../../bower_components/jquery/dist/jquery.js');
+
+var $ = require('jquery');
+var app = require('./Application');
 
 $(document).ready(app.init);

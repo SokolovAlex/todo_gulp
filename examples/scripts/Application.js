@@ -1,4 +1,4 @@
-var $ = require('../../bower_components/jquery/dist/jquery.js');
+var $ = require('jquery');
 
 var storage = require('./Storage.js')(),
     input = require('./Input.js')(),
@@ -14,7 +14,7 @@ function checkVisibility() {
     } else {
         $el.removeClass('hidden');
     }
-    footer.setAmount(todoCollection.countCompleted());
+    footer.setAmount(todoCollection.countLeft());
 }
 
 function bind() {
@@ -30,7 +30,7 @@ function bind() {
 
     todoCollection.on('sync', function(todos) {
         storage.sync(todos);
-        footer.setAmount(todoCollection.countCompleted());
+        footer.setAmount(todoCollection.countLeft());
     });
     todoCollection.on('fetch', checkVisibility);
 }

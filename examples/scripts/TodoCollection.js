@@ -2,8 +2,9 @@
  * Created by sokolov on 02.09.2015.
  */
 var Observable = require('./Observable.js');
-var $ = require('../../bower_components/jquery/dist/jquery.js');
-var _ = require('../../bower_components/lodash/lodash.js');
+var $ = require('jquery');
+var _ = require('lodash');
+var storage = require('./Storage')();
 
 module.exports = function() {
     var self = {};
@@ -35,13 +36,12 @@ module.exports = function() {
 
     self.add = function(text) {
         var todo = new Todo({ name: text, _id: _todos.length + 1 }, self);
-
         if ($el) {
             $el.append(todo.render());
         }
-
         _todos.push(todo);
         self.emit('added', todo);
+        return todo;
     };
 
     self.fetch = function(todoArray) {
@@ -59,7 +59,7 @@ module.exports = function() {
         $el.append(result);
     };
 
-    self.countCompleted = function() {
+    self.countLeft = function() {
         return _todos.filter(function(item) {
             return !item.completed;
         }).length;
@@ -67,6 +67,14 @@ module.exports = function() {
 
     self.count = function() {
         return _todos.length;
+    };
+
+    self.clear = function() {
+        _todos = [];
+        if ($el) {
+            $el.empty();
+        }
+        storage.sync([]);
     };
 
     return self;

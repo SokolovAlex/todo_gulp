@@ -8,7 +8,7 @@ module.exports = function(obj) {
     obj.emit = function(name) {
         if (events[name]) {
             var args = Array.prototype.slice.call(arguments).splice(1, arguments.length);
-            events[name].apply(self, args);
+            events[name].apply(obj, args);
         }
     };
 

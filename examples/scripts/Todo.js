@@ -1,18 +1,17 @@
 var Observable = require('./Observable.js');
-var $ = require('../../bower_components/jquery/dist/jquery.js');
-var _ = require('../../bower_components/lodash/lodash.js');
+var $ = require('jquery');
+var _ = require('lodash');
 
 module.exports = function(opt, collection) {
     var self = {};
-
-    self.name = opt.name;
-    self._id = opt.id;
-    self.completed = opt.completed;
-
-    self.$el;
     var templateFn;
 
-    Observable(module);
+    self.name = opt.name;
+    self._id = opt._id;
+    self.completed = opt.completed || false;
+    self.$el;
+
+    Observable(self);
 
     function bind() {
         $('.destroy', self.$el).on('click', self.remove);
@@ -33,7 +32,9 @@ module.exports = function(opt, collection) {
 
     self.complete = function() {
         self.completed = !self.completed;
-        self.$el.toggleClass('completed');
+        if (self.$el) {
+            self.$el.toggleClass('completed');
+        }
         collection.emit('complete');
     };
 
