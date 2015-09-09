@@ -1,4 +1,5 @@
 ﻿/// <binding Clean='clean' />
+var path = require('path');
 
 var gulp = require("gulp"),
     browserify = require("browserify"),
@@ -9,6 +10,7 @@ var gulp = require("gulp"),
     args = require('yargs').argv,
     gulpif = require('gulp-if'),
     eslint = require('gulp-eslint'),
+    notify = require("gulp-notify"),
     uglify = require("gulp-uglify");
 
 var main_js = ['examples/scripts/main.js'];
@@ -22,8 +24,8 @@ gulp.task('clean', function() {
 gulp.task('eslint', function () {
     return gulp.src('examples/scripts/**/*.js')
         .pipe(eslint())
-        .pipe(eslint.format('tap'))
-        .pipe(eslint.failOnError());
+        .pipe(eslint.format('tap'));
+     //   .pipe(eslint.failOnError());
 });
 
 gulp.task('browserify', function() {
@@ -31,7 +33,13 @@ gulp.task('browserify', function() {
         .bundle()
         .pipe(gulpif(args.release, uglify()))
         .pipe(source('scripts.js'))
-        .pipe(gulp.dest('build/'));
+        .pipe(gulp.dest('build/'))
+        .pipe(notify({
+            message: 'Build success! <%= options.date%>',
+            //icon: path.join(__dirname, 'image.jpg'),
+            title: "todo project",
+            templateOptions: { date: new Date() }
+        }));
 });
 
 gulp.task("watch:br", function (cb) {
@@ -45,7 +53,7 @@ gulp.task("build:css", function () {
     gulp.src('styles/**/*.css')
         .pipe(concat('styles.css'))
         .pipe(gulpif(args.release, cssmin()))
-        .pipe(gulp.dest('build/'));
+        .pipe(gulp.dest('build/'))
 });
 
 gulp.task("default", ['build']);
