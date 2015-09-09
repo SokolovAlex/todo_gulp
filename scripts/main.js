@@ -1,6 +1,12 @@
 var gg = window.gg || {};
 
 (function() {
-    gg.app = new gg.class.Application();
+
+
+    console.log( gg.class.Application );
+
+    gg.app = gg.class.Application();
+
+
     $(document).ready(gg.app.init);
 })();
