@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+echo ""
+echo -en "\033[36m"
+echo "Проверяем вменяемость кода..."
+echo -en "\033[0m"
+echo ""
+
+gulp validate --no-notify
+RESULT=$?
+
+if [ $RESULT -ne 0 ]
+then
+	exit $RESULT
+else
+	exit 0
+fi

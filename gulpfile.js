@@ -96,4 +96,15 @@ gulp.task('tests', function () {
         .pipe(mocha({reporter: 'nyan'}));
 });
 
+gulp.task("validate", ['eslint', "tests"]);
+
+gulp.task('precommit', function() {
+    gulp.src('./hooks/pre-commit').pipe(gulp.dest('./.git/hooks'));
+});
+
+gulp.task('precommit-remove', function() {
+    gulp.src(["./.git/hooks/pre-commit"], { read: false })
+        .pipe(rimraf());
+});
+
 gulp.task("build", ['clean', 'eslint', 'build_tests', 'browserify', 'build:css', 'watch']);

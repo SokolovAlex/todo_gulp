@@ -47,7 +47,7 @@ describe('test collection: ', function () {
         assert.equal(collection.countLeft(), 1, "wrong left todos number after complete");
     });
 
-    it.skip('skipped test', function () {
-        assert.ok(false,"wrong test");
+    it('mistake test', function () {
+        assert.ok(false,"wrong!");
     });
 });
