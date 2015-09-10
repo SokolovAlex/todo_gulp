@@ -45,7 +45,6 @@ describe('test collection: ', function () {
 
         assert.ok(todo.completed, "wrong completed field of todo after complete");
         assert.equal(collection.countLeft(), 1, "wrong left todos number after complete");
-
     });
 
     it.skip('skipped test', function () {

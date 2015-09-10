@@ -13,7 +13,10 @@ var gulp = require("gulp"),
     gulpif = require('gulp-if'),
     gutil = require('gulp-util'),
     eslint = require('gulp-eslint'),
+    filesize = require("gulp-filesize"),
     notify = require("gulp-notify"),
+    streamify = require("gulp-streamify"),
+    mocha = require("gulp-mocha"),
     stream = require("event-stream"),
     uglify = require("gulp-uglify");
 
@@ -42,18 +45,20 @@ gulp.task('browserify', function() {
     gutil.log(gutil.colors.cyan('Start .js build'));
     return browserify(main_js)
         .bundle()
-        .pipe(gulpif(args.release, uglify()))
         .pipe(source('scripts.js'))
+        .pipe(gulpif(args.release, streamify(uglify())))
+        .pipe(filesize())
         .pipe(gulp.dest('build/'))
         .pipe(notify({
             message: 'Build success! <%= options.date%>',
             //icon: path.join(__dirname, 'image.jpg'),
             title: "todo project",
             templateOptions: { date: new Date() }
-        }));
+        }))
+        .on('error', gutil.log);
 });
 
-gulp.task("watch:br", function (cb) {
+gulp.task("watch", function (cb) {
     if (args.release) {
         return cb();
     }
@@ -66,8 +71,11 @@ gulp.task("build:css", function () {
     var lessStream = gulp.src('styles/**/*.css');
     stream.merge(cssStream, lessStream)
         .pipe(concat('styles.css'))
+        .pipe(filesize())
         .pipe(gulpif(args.release, cssmin()))
-        .pipe(gulp.dest('build/'));
+        .pipe(filesize())
+        .pipe(gulp.dest('build/'))
+        .on('error', gutil.log);
 });
 
 gulp.task('less', function () {
@@ -76,6 +84,16 @@ gulp.task('less', function () {
         .pipe(gulp.dest('build'));
 });
 
-gulp.task("validate", ['eslint']);
+gulp.task('build_tests', function (cb) {
+    if (!args.release) {
+        return cb();
+    }
+    return gulp.start('tests');
+});
 
-gulp.task("build", ['clean', 'eslint', 'browserify', 'build:css', 'watch:br']);
+gulp.task('tests', function () {
+    return gulp.src('tests/**/*.test.js', {read: false})
+        .pipe(mocha({reporter: 'nyan'}));
+});
+
+gulp.task("build", ['clean', 'eslint', 'build_tests', 'browserify', 'build:css', 'watch']);
