@@ -6,12 +6,15 @@ var gulp = require("gulp"),
     rimraf = require("gulp-rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
+    less = require('gulp-less'),
     jshint = require("gulp-jshint"),
     source = require('vinyl-source-stream'),
     args = require('yargs').argv,
     gulpif = require('gulp-if'),
+    gutil = require('gulp-util'),
     eslint = require('gulp-eslint'),
     notify = require("gulp-notify"),
+    stream = require("event-stream"),
     uglify = require("gulp-uglify");
 
 var main_js = ['examples/scripts/main.js'];
@@ -36,6 +39,7 @@ gulp.task('jshint', function () {
 });
 
 gulp.task('browserify', function() {
+    gutil.log(gutil.colors.cyan('Start .js build'));
     return browserify(main_js)
         .bundle()
         .pipe(gulpif(args.release, uglify()))
@@ -57,13 +61,20 @@ gulp.task("watch:br", function (cb) {
 });
 
 gulp.task("build:css", function () {
-    gulp.src('styles/**/*.css')
+    var cssStream = gulp.src('./styles/*.less')
+        .pipe(less());
+    var lessStream = gulp.src('styles/**/*.css');
+    stream.merge(cssStream, lessStream)
         .pipe(concat('styles.css'))
         .pipe(gulpif(args.release, cssmin()))
-        .pipe(gulp.dest('build/'))
+        .pipe(gulp.dest('build/'));
 });
 
-gulp.task("default", ['build']);
+gulp.task('less', function () {
+    gulp.src('./styles/*.less')
+        .pipe(less())
+        .pipe(gulp.dest('build'));
+});
 
 gulp.task("validate", ['eslint']);
 

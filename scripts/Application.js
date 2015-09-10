@@ -3,13 +3,11 @@ gg.class = gg.class || {};
 
 gg.class.Application  = (function () {
     var instance;
-    return function applicationInstance () {
-
+    return function () {
         if (instance) {
-            alert("Am already inited");
+            console.error("A\'m already inited!");
             return instance;
         }
-        instance = {};
 
         var storage = new gg.class.Storage(),
             input = new gg.class.Input(),
@@ -47,17 +45,19 @@ gg.class.Application  = (function () {
             todoCollection.on('fetch', checkVisibility);
         }
 
-        instance.init = function() {
-            $el = $('.todoapp');
-            storage.init();
-            input.init($(".todoapp .input_main"));
-            todoCollection.init($(".todoapp .todo-list"));
-            footer.init($('.todoapp .footer'));
+        instance = {
+            init: function () {
+                $el = $('.todoapp');
+                storage.init();
+                input.init($(".todoapp .input_main"));
+                todoCollection.init($(".todoapp .todo-list"));
+                footer.init($('.todoapp .footer'));
 
-            bind();
+                bind();
 
-            $mainSection = $('.todoapp .main');
-            todoCollection.fetch(storage.get());
+                $mainSection = $('.todoapp .main');
+                todoCollection.fetch(storage.get());
+            }
         };
 
         return instance;
