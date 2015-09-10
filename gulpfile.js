@@ -2,6 +2,7 @@
 var path = require('path');
 
 var gulp = require("gulp"),
+    babel = require('gulp-babel'),
     browserify = require("browserify"),
     rimraf = require("gulp-rimraf"),
     concat = require("gulp-concat"),
@@ -105,6 +106,12 @@ gulp.task('precommit', function() {
 gulp.task('precommit-remove', function() {
     gulp.src(["./.git/hooks/pre-commit"], { read: false })
         .pipe(rimraf());
+});
+
+gulp.task('es6', function () {
+    return gulp.src('examples/scripts_es6/Application.js')
+        .pipe(babel())
+        .pipe(gulp.dest('build/es6'));
 });
 
 gulp.task("build", ['clean', 'eslint', 'build_tests', 'browserify', 'build:css', 'watch']);
