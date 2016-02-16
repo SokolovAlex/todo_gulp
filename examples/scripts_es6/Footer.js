@@ -6,11 +6,11 @@ module.exports = function() {
         $amount;
 
     return Observable({
-        init: function(el) {
+        init(el) {
             $el = el;
             $amount = $('.amount', $el);
         },
-        setAmount: function(value) {
+        setAmount(value) {
             $amount.text(value);
         }
     });
